@@ -6,6 +6,10 @@ class HeaderValidator:
         self.headers = headers
 
     def validate_headers(self):
+        required_headers = ["x5u", "alg", "typ"]
+        missing_headers = [header for header in required_headers if header not in self.headers]
+        if missing_headers:
+            raise HTTPException(status_code=422, detail=f"Invalid token headers. {', '.join(missing_headers)} header(s) is missing.")
         if self.headers["alg"] != configuration.ALGORITHM:
             raise HTTPException(status_code=422, detail=f"Invalid algorithm. Alg header is {self.headers['alg']}. The API is configured to use {configuration.ALGORITHM}.")
         if self.headers["typ"] != "JWT":

@@ -9,10 +9,11 @@ class JWTDecoder:
             If the token is invalid, it will raise an exception.
 
         Returns:
-            if valid token: {'alg': str, 'typ': str}
+            if valid token: dictionary including the headers.
             else: {"error": "Invalid token"}
         """
         try:
+            print(jwt.get_unverified_header(self.token[7:]))
             return jwt.get_unverified_header(self.token[7:]) # Remove "Bearer " from the token.
         except jwt.exceptions.DecodeError as e:
             return {"error": str(e)}

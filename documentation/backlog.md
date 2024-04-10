@@ -4,8 +4,8 @@
 | Automated tests setup  |   |   | x  |
 | Configuration setup |   | x  |   |
 | Create error for unallowed HTTP requests |   |   | x  |
-| Check if JWT uses RS256 |   | x  |   |
-| Check JWT headers |   |  x |   |
+| Check if JWT uses RS256 |   |   | x  |
+| Check JWT headers |   |   | x  |
 | Check JWT signature |x   |   |   |
 | Check JWT issue time |x   |   |   |
 | Check JWT expiration |x   |   |   |
