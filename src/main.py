@@ -1,16 +1,18 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from typing import Annotated
+from fastapi import FastAPI, HTTPException, Header
 from pydantic import BaseModel
+from services.jwt_decoder import JWTDecoder
 
 app = FastAPI()
 
 class JWTValidity(BaseModel):
     valid: bool 
 
-@app.get("/", response_model=JWTValidity)
-async def index():
-    # JWT validation logic go here
+@app.get("/auth", response_model=JWTValidity)
+async def index(Authorization: Annotated[str | None, Header()]):
     jwt_validity = False
+    token_headers = JWTDecoder(token=Authorization).get_token_headers()
     if not jwt_validity:
         raise HTTPException(status_code=400, detail="Missing headers or invalid JWT.")
     return JWTValidity(valid=jwt_validity)

@@ -4,18 +4,21 @@ from main import app
 
 @pytest.mark.asyncio
 async def test_index_empty_get():
-    """An empty GET request should return a 400 status code.
+    """An empty GET request should return a 422 (unprocessable entity) status code with an explanation.
     """
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
-        response = await ac.get("/")
-        assert response.status_code == 400
+        response = await ac.get("/auth")
+        assert response.status_code == 422
+        assert response.json()["detail"][0]["type"] == "missing"
+        assert response.json()["detail"][0]["loc"] == ["header", "Authorization"]
+        assert response.json()["detail"][0]["msg"] == "Field required"
 
 @pytest.mark.asyncio
 async def test_index_post():
     """A POST request should return a 405 status code.
     """
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
-        response = await ac.post("/")
+        response = await ac.post("/auth")
         assert response.status_code == 405
         assert response.json() == {"detail": "Method Not Allowed"}
 
@@ -24,7 +27,7 @@ async def test_index_put():
     """A PUT request should return a 405 status code.
     """
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
-        response = await ac.put("/")
+        response = await ac.put("/auth")
         assert response.status_code == 405
         assert response.json() == {"detail": "Method Not Allowed"}
 
@@ -33,6 +36,6 @@ async def test_index_delete():
     """A DELETE request should return a 405 status code.
     """
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
-        response = await ac.delete("/")
+        response = await ac.delete("/auth")
         assert response.status_code == 405
         assert response.json() == {"detail": "Method Not Allowed"}
