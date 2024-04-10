@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import FastAPI, HTTPException, Header
 from pydantic import BaseModel
 from services.jwt_decoder import JWTDecoder
+from services.header_validator import HeaderValidator
 
 app = FastAPI()
 
@@ -11,10 +12,11 @@ class JWTValidity(BaseModel):
 
 @app.get("/auth", response_model=JWTValidity)
 async def index(Authorization: Annotated[str | None, Header()]):
-    jwt_validity = False
+    jwt_validity = True
     token_headers = JWTDecoder(token=Authorization).get_token_headers()
-    if not jwt_validity:
-        raise HTTPException(status_code=400, detail="Missing headers or invalid JWT.")
+    if "error" in token_headers:
+        raise HTTPException(status_code=422, detail=token_headers["error"])
+    HeaderValidator(headers=token_headers).validate_headers()
     return JWTValidity(valid=jwt_validity)
 
 if __name__ == "__main__":

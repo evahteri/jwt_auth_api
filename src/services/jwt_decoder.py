@@ -14,6 +14,6 @@ class JWTDecoder:
         """
         try:
             return jwt.get_unverified_header(self.token[7:]) # Remove "Bearer " from the token.
-        except jwt.exceptions.DecodeError:
-            return {"error": "Invalid token"}
+        except jwt.exceptions.DecodeError as e:
+            return {"error": str(e)}
 
