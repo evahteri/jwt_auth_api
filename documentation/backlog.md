@@ -1,6 +1,6 @@
 | Task  | Not Started  | In progress  | Finished  |
 |---|---|---|---|
-| File structure and first working version  | x  |  |   |
+| File structure and first working version  |   | x |   |
 | Automated tests setup  | x  |   |   |
 | Configruation setup | x  |   |   |
 | Create error for unallowed HTTP requests |x   |   |   |
