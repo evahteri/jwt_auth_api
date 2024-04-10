@@ -1,7 +1,7 @@
 | Task  | Not Started  | In progress  | Finished  |
 |---|---|---|---|
-| File structure and first working version  |   | x |   |
-| Automated tests setup  | x  |   |   |
+| File structure and first working version  |   |  | x  |
+| Automated tests setup  |   |   | x  |
 | Configruation setup | x  |   |   |
 | Create error for unallowed HTTP requests |x   |   |   |
 | Check if JWT uses RS256 |x   |   |   |
