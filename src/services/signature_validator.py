@@ -3,7 +3,7 @@ import jwt as pyjwt
 from fastapi import HTTPException
 
 class SignatureValidator:
-    def __init__(self, token: str, x5u: str) -> bool:
+    def __init__(self, token: str, x5u: str) -> dict:
         self.token = token
         self.x5u = x5u
 
@@ -25,5 +25,11 @@ class SignatureValidator:
         except httpx.HTTPError as e:
             raise HTTPException(status_code=422, detail={"message": "Invalid x5u. The certificate could not be retrieved.",
                                                               "detail": e})
-
-        return pyjwt.decode(self.token[7:],key=key, algorithms=["RS256"])
+        try: 
+            return pyjwt.decode(self.token[7:],key=key, algorithms=["RS256"])
+        except pyjwt.ImmatureSignatureError:
+           raise HTTPException(status_code=422, detail={"message": "Invalid iat. The certificate could not be validated.",
+                                                              "detail": "The token is not yet valid (iat)"})
+        except pyjwt.ExpiredSignatureError:
+            raise HTTPException(status_code=422, detail={"message": "Invalid iat. The certificate could not be validated.",
+                                                              "detail": "Signature has expired"})
