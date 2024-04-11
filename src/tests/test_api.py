@@ -11,8 +11,10 @@ async def test_auth_empty_get():
         response = await ac.get("/auth")
         assert response.status_code == 422
         assert response.json()["detail"][0]["type"] == "missing"
-        assert response.json()["detail"][0]["loc"] == ["header", "Authorization"]
+        assert response.json()["detail"][0]["loc"] == [
+            "header", "Authorization"]
         assert response.json()["detail"][0]["msg"] == "Field required"
+
 
 @pytest.mark.asyncio
 async def test_auth_missing_x5u_header():
@@ -22,6 +24,7 @@ async def test_auth_missing_x5u_header():
         response = await ac.get("/auth", headers={"Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.NHVaYe26MbtOYhSKkoKYdFVomg4i8ZJd8_-RU8VNbftc4TSMb4bXP3l3YlNWACwyXPGffz5aXHc6lty1Y2t4SWRqGteragsVdZufDn5BlnJl9pdR_kdVFUsra2rWKEofkZeIC4yWytE58sMIihvo9H1ScmmVwBcQP6XETqYd0aSHp1gOa9RdUPDvoXQ5oqygTqVtxaDr6wUFKrKItgBMzWIdNZ6y7O9E0DhEPTbE9rfBo6KTFsHAZnMg4k68CDp2woYIaXbmYTWcvbzIuHO7_37GT79XdIwkm95QJ7hYC9RiwrV7mesbY4PAahERJawntho0my942XheVLmGwLMBkQ"})
         assert response.status_code == 422
         assert response.json()["detail"].startswith("Invalid token headers")
+
 
 @pytest.mark.asyncio
 async def test_auth_missing_typ_header():
@@ -52,6 +55,7 @@ async def test_auth_post():
         assert response.status_code == 405
         assert response.json() == {"detail": "Method Not Allowed"}
 
+
 @pytest.mark.asyncio
 async def test_auth_put():
     """A PUT request should return a 405 status code.
@@ -60,6 +64,7 @@ async def test_auth_put():
         response = await ac.put("/auth")
         assert response.status_code == 405
         assert response.json() == {"detail": "Method Not Allowed"}
+
 
 @pytest.mark.asyncio
 async def test_auth_delete():

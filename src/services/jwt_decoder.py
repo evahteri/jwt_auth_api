@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 import jwt as pyjwt
 
+
 class JWTDecoder:
     def __init__(self, token: str):
         self.token = token
@@ -15,8 +16,7 @@ class JWTDecoder:
         """
         try:
             print(pyjwt.get_unverified_header(self.token[7:]))
-            return pyjwt.get_unverified_header(self.token[7:]) # Remove "Bearer " from the token.
+            # Remove "Bearer " from the token.
+            return pyjwt.get_unverified_header(self.token[7:])
         except pyjwt.exceptions.DecodeError as e:
             raise HTTPException(status_code=422, detail=e)
-
-

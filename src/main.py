@@ -9,8 +9,10 @@ from services.custom_expiration_validator import ExpirationValidator
 
 app = FastAPI()
 
+
 class JWTValidity(BaseModel):
-    valid: bool 
+    valid: bool
+
 
 @app.get("/auth", response_model=JWTValidity)
 async def index(Authorization: Annotated[str | None, Header()]) -> JWTValidity:
@@ -18,7 +20,8 @@ async def index(Authorization: Annotated[str | None, Header()]) -> JWTValidity:
     token_headers = JWTDecoder(token=Authorization).get_token_headers()
     jwt_validity = HeaderValidator(headers=token_headers).validate_headers()
     token_payload = await SignatureValidator(token=Authorization, x5u=token_headers["x5u"]).validate_signature()
-    jwt_validity = ExpirationValidator(token_payload=token_payload).validate_expiration()
+    jwt_validity = ExpirationValidator(
+        token_payload=token_payload).validate_expiration()
     return JWTValidity(valid=jwt_validity)
 
 if __name__ == "__main__":
