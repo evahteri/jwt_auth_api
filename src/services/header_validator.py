@@ -5,7 +5,7 @@ class HeaderValidator:
     def __init__(self, headers: dict):
         self.headers = headers
 
-    def validate_headers(self):
+    def validate_headers(self) -> bool:
         required_headers = ["x5u", "alg", "typ"]
         missing_headers = [header for header in required_headers if header not in self.headers]
         if missing_headers:

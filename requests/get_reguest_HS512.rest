@@ -1,4 +1,0 @@
-GET http://localhost:8000/auth HTTP/1.1
-Host: localhost
-Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCIsIng1dSI6Imh0dHBzOi8vZXhhbXBsZS5jb20vY2VydC5wZW0ifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.9kns8MAo9FAf5ggLQkR7LxVBU6nSmGCl8vu5EDUYwvaOjwBSwYAD6c1c3RE1Dn39EolOitEQKMzV3SNB8llCrw

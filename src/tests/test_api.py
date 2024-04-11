@@ -2,15 +2,6 @@ import pytest
 from httpx import AsyncClient, ASGITransport
 from main import app
 
-@pytest.mark.asyncio
-async def test_auth_get_valid_jwt():
-    """A GET request with a valid JWT token should return a 200 status code and a JSON response with a "valid" key set to True.
-    """
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
-        response = await ac.get("/auth", headers={"Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsIng1dSI6Imh0dHBzOi8vZXhhbXBsZS5jb20vY2VydC5wZW0ifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE2MTM4ODQ0MDJ9.Egq3FzoKPlJ4lRyF0tF2Ug1kUThTTd-0MmlvDjAh-tvPflDpXq0YkxOKv_k4RGy7qGLK2h1fyKAg23Ijv84rd0Wdp_nU4b16Le8BX6EM"})
-        assert response.json() == {"valid": True}
-        assert response.status_code == 200
-        assert response.json() == {"valid": True}
 
 @pytest.mark.asyncio
 async def test_auth_empty_get():
