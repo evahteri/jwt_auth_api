@@ -66,7 +66,7 @@ Authorization: Bearer { your encoded JWT }
 ```
 - Here is a valid GET request created with [Postman](https://www.postman.com/):
 
-    - ![Postman GET Request example](linkhere)
+    - ![Postman GET Request example](https://github.com/evahteri/jwt_auth_api/blob/main/documentation/example_request_postman.png)
 
 - Here is a valid GET request created with curl:
     - ```curl -i --header "Authorization: Bearer { your encoded JWT }" http://localhost:8000/auth```
