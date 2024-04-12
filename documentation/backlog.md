@@ -11,6 +11,6 @@
 | Check JWT expiration |   |   | x  |
 | Custom errors | x  |   |   |
 | JWT signature tests |   | x  |   |
-| Helper backend |   | x  |   |
+| Helper backend |   |   | x  |
 | How to use -instructions |   | x  |   |
 | Flow graph documentation |  x |   |   |

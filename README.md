@@ -37,6 +37,40 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsIng1dSI6Imh0dHA6Ly9sb2
 
 - The server responds with an error and explanation if the JWT is invalid.
 
+### Creating a valid RS256 JWT token and serving the public key locally for demonstrative purposes and integration testing
+
+- Navigate to [backend_for_testing](backend_for_testing) directory
+
+- Create a private key and corresponding public key pair with
+
+    - ```openssl genrsa -out test_private_key.pem 4096```
+
+    - ```openssl rsa -in test_private_key.pem -pubout -outform PEM -out test_public_key.pem```
+
+- Generate an encoded JWT token with ```python3 jwt_generator.py```
+
+- Copy the encoded JWT token from the terminal by selecting the string between "encoded starts" and "encoded ends"
+
+- Start the dummy backend server with ```python3 dummy_backend.py```
+
+    - The server is now sharing your "test_public_key.pem" at http://localhost:3000/pubkey.pem for validating the JWT token created earlier.
+
+- Start the JWT Auth API with ``` python3 src/main.py ``` in the root directory
+
+- Create a GET request with the encoded JWT token copied earlier:
+```
+GET http://localhost:8000/auth HTTP/1.1
+Host: localhost
+Accept: application/json
+Authorization: Bearer { your encoded JWT }
+```
+- Here is a valid GET request created with [Postman](https://www.postman.com/):
+
+    - ![Postman GET Request example](linkhere)
+
+- Here is a valid GET request created with curl:
+    - ```curl -i --header "Authorization: Bearer { your encoded JWT }" http://localhost:8000/auth```
+
 ## Configuration
 Maximum time to live for the token can be adjusted in the [configuration.py](src/configuration.py) file.
 

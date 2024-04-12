@@ -2,3 +2,5 @@ venv
 __pycache__
 .pytest_cache
 requests
+test_private_key.pem
+test_public_key.pem

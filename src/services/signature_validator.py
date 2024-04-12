@@ -26,6 +26,9 @@ class SignatureValidator:
         except httpx.HTTPError as e:
             raise HTTPException(status_code=422, detail={"message": "Invalid x5u. The certificate could not be retrieved.",
                                                          "detail": e})
+        except TypeError:
+            raise HTTPException(status_code=422, detail={"message": "Invalid x5u. The certificate could not be retrieved.",
+                                                         "detail": e})
         try:
             return pyjwt.decode(self.token[7:], key=key, algorithms=["RS256"])
         except pyjwt.ImmatureSignatureError:
