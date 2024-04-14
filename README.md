@@ -39,7 +39,7 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsIng1dSI6Imh0dHA6Ly9sb2
 
 ### Creating a valid RS256 JWT token and serving the public key locally for demonstrative purposes and integration testing
 
-- Navigate to [backend_for_testing](backend_for_testing) directory
+- Navigate to backend_for_testing directory
 
 - Create a private key and corresponding public key pair with
 
@@ -49,7 +49,7 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsIng1dSI6Imh0dHA6Ly9sb2
 
 - Generate an encoded JWT token with ```python3 jwt_generator.py```
 
-- Copy the encoded JWT token from the terminal by selecting the string between "encoded starts" and "encoded ends"
+- Copy the encoded JWT token from the terminal
 
 - Start the dummy backend server with ```python3 dummy_backend.py```
 

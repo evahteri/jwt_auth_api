@@ -14,3 +14,4 @@
 | Helper backend |   |   | x  |
 | How to use -instructions |   | x  |   |
 | Flow graph documentation |  x |   |   |
+| Integration tests with dummy backend |  | x  |   |
