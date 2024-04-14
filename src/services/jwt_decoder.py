@@ -14,9 +14,9 @@ class JWTDecoder:
             if valid token: dictionary including the headers.
             else: {"error": "Invalid token"}
         """
+        if " " in self.token[7:]:
+            raise HTTPException(status_code=422, detail="Invalid token. The token should not contain any spaces.")
         try:
-            print(pyjwt.get_unverified_header(self.token[7:]))
-            # Remove "Bearer " from the token.
             return pyjwt.get_unverified_header(self.token[7:])
         except pyjwt.exceptions.DecodeError as e:
             raise HTTPException(status_code=422, detail=e)

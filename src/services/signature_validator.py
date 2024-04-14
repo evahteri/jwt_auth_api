@@ -22,6 +22,7 @@ class SignatureValidator:
             if response.status_code != 200:
                 raise HTTPException(status_code=422, detail={"message": "Invalid x5u. The certificate could not be retrieved.",
                                                              "detail": "The url provided in x5u responded with a " + str(response.status_code) + " status code."})
+            print(response)
             key = response.json()
         except httpx.HTTPError as e:
             raise HTTPException(status_code=422, detail={"message": "Invalid x5u. The certificate could not be retrieved.",
@@ -30,6 +31,7 @@ class SignatureValidator:
             raise HTTPException(status_code=422, detail={"message": "Invalid x5u. The certificate could not be retrieved.",
                                                          "detail": e})
         try:
+            print(pyjwt.decode(self.token[7:], key=key, algorithms=["RS256"]))
             return pyjwt.decode(self.token[7:], key=key, algorithms=["RS256"])
         except pyjwt.ImmatureSignatureError:
             raise HTTPException(status_code=422, detail={"message": "Invalid iat. The certificate could not be validated.",

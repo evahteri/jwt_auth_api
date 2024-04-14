@@ -26,11 +26,11 @@ async def test_auth_invalid_token_iat_not_yet_active():
     """
     iat = int(datetime.now().timestamp())
 
-    valid_jwt_token = JWTGenerator().generate_jwt_token(iat=iat + 5000, exp=iat + 10000, x5u="http://localhost:3000/pubkey.pem" ,typ="JWT", alg= "RS256")
+    jwt_token = JWTGenerator().generate_jwt_token(iat=iat + 5000, exp=iat + 10000, x5u="http://localhost:3000/pubkey.pem" ,typ="JWT", alg= "RS256")
 
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
 
-        response = await ac.get("/auth", headers={"Authorization": f"Bearer {valid_jwt_token}"})
+        response = await ac.get("/auth", headers={"Authorization": f"Bearer {jwt_token}"})
         assert response.status_code == 422
         assert response.json()["detail"]["detail"] == "The token is not yet valid (iat)"
 
@@ -40,11 +40,11 @@ async def test_auth_invalid_token_not_RS256():
     """
     iat = int(datetime.now().timestamp())
 
-    valid_jwt_token = JWTGenerator().generate_jwt_token(iat=iat, exp=iat + 5000, x5u="http://localhost:3000/pubkey.pem" ,typ="JWT", alg= "RS512")
+    jwt_token = JWTGenerator().generate_jwt_token(iat=iat, exp=iat + 5000, x5u="http://localhost:3000/pubkey.pem" ,typ="JWT", alg= "RS512")
 
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
 
-        response = await ac.get("/auth", headers={"Authorization": f"Bearer {valid_jwt_token}"})
+        response = await ac.get("/auth", headers={"Authorization": f"Bearer {jwt_token}"})
         assert response.status_code == 422
         assert response.json()["detail"] == "Invalid algorithm. Alg header is RS512. The API is configured to use RS256."
 
@@ -54,11 +54,11 @@ async def test_auth_invalid_token_typ_not_JWT():
     """
     iat = int(datetime.now().timestamp())
 
-    valid_jwt_token = JWTGenerator().generate_jwt_token(iat=iat, exp=iat + 5000, x5u="http://localhost:3000/pubkey.pem" ,typ="AT", alg= "RS256")
+    jwt_token = JWTGenerator().generate_jwt_token(iat=iat, exp=iat + 5000, x5u="http://localhost:3000/pubkey.pem" ,typ="AT", alg= "RS256")
 
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
 
-        response = await ac.get("/auth", headers={"Authorization": f"Bearer {valid_jwt_token}"})
+        response = await ac.get("/auth", headers={"Authorization": f"Bearer {jwt_token}"})
         assert response.status_code == 422
         assert response.json()["detail"] == "Invalid token type. Typ header is AT. The API is configured to use JWT."
 
@@ -68,11 +68,11 @@ async def test_auth_invalid_token_missing_x5u_header():
     """
     iat = int(datetime.now().timestamp())
 
-    valid_jwt_token = JWTGenerator().generate_jwt_token(iat=iat, exp=iat + 5000, typ="AT", alg= "RS256")
+    jwt_token = JWTGenerator().generate_jwt_token(iat=iat, exp=iat + 5000, typ="AT", alg= "RS256")
 
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
 
-        response = await ac.get("/auth", headers={"Authorization": f"Bearer {valid_jwt_token}"})
+        response = await ac.get("/auth", headers={"Authorization": f"Bearer {jwt_token}"})
         assert response.status_code == 422
         assert response.json()["detail"] == "Invalid token headers. x5u header(s) is missing."
 
@@ -82,10 +82,24 @@ async def test_auth_invalid_token_missing_typ_header():
     """
     iat = int(datetime.now().timestamp())
 
-    valid_jwt_token = JWTGenerator().generate_jwt_token(iat=iat, exp=iat + 5000, x5u="http://localhost:3000/pubkey.pem", alg= "RS256")
+    jwt_token = JWTGenerator().generate_jwt_token(iat=iat, exp=iat + 5000, x5u="http://localhost:3000/pubkey.pem", alg= "RS256")
 
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
 
-        response = await ac.get("/auth", headers={"Authorization": f"Bearer {valid_jwt_token}"})
+        response = await ac.get("/auth", headers={"Authorization": f"Bearer {jwt_token}"})
         assert response.status_code == 422
         assert response.json()["detail"] == "Invalid token headers. typ header(s) is missing."
+
+@pytest.mark.asyncio
+async def test_auth_invalid_token_invalid_authorization_header_format():
+    """A GET request with a token that has an invalid Authorization header format should return 422 with an explanation.
+    """
+    iat = int(datetime.now().timestamp())
+
+    jwt_token = JWTGenerator().generate_jwt_token(iat=iat, exp=iat + 5000, x5u="http://localhost:3000/pubkey.pem" ,typ="JWT", alg= "RS256")
+
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+
+        response = await ac.get("/auth", headers={"Authorization": f"Bearer  {jwt_token}"})
+        assert response.status_code == 422
+        assert response.json()["detail"] == "Invalid token. The token should not contain any spaces."
