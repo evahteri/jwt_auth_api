@@ -11,14 +11,13 @@ class JWTDecoder:
             If the token is invalid, it will raise an exception.
 
         Returns:
-            if valid token: dictionary including the headers.
-            else: {"error": "Invalid token"}
+            if the token is valid: dictionary including the headers.
         """
         if len(self.token) < 512 or self.token[:7] != "Bearer ":
             raise HTTPException(status_code=422, detail="Invalid token. The token should start with 'Bearer ', And should be at least 512 characters long.")
         if " " in self.token[7:]:
             raise HTTPException(status_code=422, detail="Invalid token. The token should not contain any spaces.")
         try:
-            return pyjwt.get_unverified_header(self.token[7:])
+            return pyjwt.get_unverified_header(self.token[7:]) # Here the validation is not yet done, only fetching the headers.
         except pyjwt.exceptions.DecodeError as e:
-            raise HTTPException(status_code=422, detail=e)
+            raise HTTPException(status_code=422, detail=e) # This error is raised when the token is invalid.

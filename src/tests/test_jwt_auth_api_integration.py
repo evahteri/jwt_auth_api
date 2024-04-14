@@ -117,3 +117,17 @@ async def test_auth_invalid_token_invalid_authorization_header_format_typo():
         response = await ac.get("/auth", headers={"Authorization": f"Beaer  {jwt_token}"})
         assert response.status_code == 422
         assert response.json()["detail"] == "Invalid token. The token should start with 'Bearer ', And should be at least 512 characters long."
+
+@pytest.mark.asyncio
+async def test_auth_invalid_token_max_time_to_live_exceeded():
+    """A GET request with a token that has an invalid Authorization header format (Beaer != Bearer) should return 422 with an explanation.
+    """
+    iat = int(datetime.now().timestamp())
+
+    jwt_token = JWTGenerator().generate_jwt_token(iat=iat, exp=iat + 86401, x5u="http://localhost:3000/pubkey.pem" ,typ="JWT", alg= "RS256")
+
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+
+        response = await ac.get("/auth", headers={"Authorization": f"Bearer {jwt_token}"})
+        assert response.status_code == 422
+        assert response.json()["detail"]["detail"] == "The token's time to live exceeds the maximum time to live allowed (86400)"
