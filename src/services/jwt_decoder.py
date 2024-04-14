@@ -14,6 +14,8 @@ class JWTDecoder:
             if valid token: dictionary including the headers.
             else: {"error": "Invalid token"}
         """
+        if len(self.token) < 512 or self.token[:7] != "Bearer ":
+            raise HTTPException(status_code=422, detail="Invalid token. The token should start with 'Bearer ', And should be at least 512 characters long.")
         if " " in self.token[7:]:
             raise HTTPException(status_code=422, detail="Invalid token. The token should not contain any spaces.")
         try:
