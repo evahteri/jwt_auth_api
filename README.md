@@ -75,7 +75,11 @@ Authorization: Bearer { your encoded JWT }
 Maximum time to live for the token can be adjusted in the [configuration.py](src/configuration.py) file.
 
 ## Testing
-Automated unit tests can be run with command ```pytest```
+Integration tests use the provided dummy backend for token validation.
+
+- Start the dummy backend server with ```python3 src/backend_for_testing/dummy_backend.py```
+
+- Run the tests with ```pytest```
 
 ## Documentation
 - [Backlog](documentation/backlog.md)
