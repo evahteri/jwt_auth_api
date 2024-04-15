@@ -81,5 +81,80 @@ Integration tests use the provided dummy backend for token validation.
 
 - Run the tests with ```pytest```
 
+## Usage Examples
+
+### Incorrect headers
+
+- Client:
+
+```
+GET http://localhost:8000/auth HTTP/1.1
+Host: localhost
+Accept: application/json
+Authorization: Bearer { jwt with a RS512 alg header }
+```
+
+- JWT Auth Api:
+```
+HTTP/1.1 400 Bad Request
+date: Mon, 15 Apr 2024 13:31:37 GMT
+server: uvicorn
+content-length: 88
+content-type: application/json
+Connection: close
+
+{
+  "detail": "Invalid algorithm. Alg header is RS512. The API is configured to use RS256."
+}
+```
+### Valid JWT Token
+
+- Client:
+```
+GET http://localhost:8000/auth HTTP/1.1
+Host: localhost
+Accept: application/json
+Authorization: Bearer { valid jwt }
+```
+- JWT Auth API:
+```
+HTTP/1.1 200 OK
+date: Mon, 15 Apr 2024 13:33:46 GMT
+server: uvicorn
+content-length: 14
+content-type: application/json
+Connection: close
+
+{
+  "valid": true
+}
+```
+### Invalid JWT (signature validation fails due to error in x5u)
+
+- Client:
+
+```
+GET http://localhost:8000/auth HTTP/1.1
+Host: localhost
+Accept: application/json
+Authorization: Bearer { invalid jwt }
+```
+
+
+- JWT Auth API:
+```
+HTTP/1.1 422 Unprocessable Entity
+date: Mon, 15 Apr 2024 13:36:52 GMT
+server: uvicorn
+content-length: 123
+content-type: application/json
+Connection: close
+
+{
+  "detail": "Invalid x5u. The certificate could not be retrieved. The url provided in x5u responded with a 404 status code."
+}
+```
+
+
 ## Documentation
 - [Backlog](documentation/backlog.md)

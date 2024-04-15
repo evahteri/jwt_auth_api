@@ -9,9 +9,9 @@
 | Check JWT signature |   |   | x  |
 | Check JWT issue time |   |   | x  |
 | Check JWT expiration |   |   | x  |
-| Custom errors |   |  x |   |
+| Custom errors |   |   |  x |
 | JWT signature tests |   |   | x  |
 | Helper backend |   |   | x  |
 | How to use -instructions |   |   | x  |
-| Flow graph documentation |  x |   |   |
+| Flow graph documentation |  | x  |   |
 | Integration tests with dummy backend |  |   | x  |

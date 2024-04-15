@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+import os
 
 app = FastAPI()
 
@@ -10,7 +11,10 @@ async def get_cert():
     Check README for instructions on how to create a private/public key pair and a corresbonding JWT.
     The endpoint returns the contents of the .pem file.
     """
-    public_key = open('test_public_key.pem', 'r').read()
+    file_path_public_key = os.path.join(os.path.dirname(
+        os.path.abspath(__file__)), "test_public_key.pem")
+    with open(file_path_public_key, "r") as f:
+        public_key = f.read()
     return public_key.strip()
 
 if __name__ == "__main__":
