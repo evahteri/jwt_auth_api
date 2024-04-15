@@ -41,6 +41,8 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsIng1dSI6Imh0dHA6Ly9sb2
 
 - 200: The request was successful and the JWT provided is valid
 - 400: There was a problem in the request format (i.e. missing header)
+- 404: Invalid URL. The only endpoint is http://localhost:8000/auth
+- 405: Method not allowed (i.e. The client tried to make a POST request)
 - 422: The request was formed correctly but the JWT token was invalid due to an error (i.e. Token expired) or could not be verified (i.e. invalid x5u)
 
 
