@@ -29,6 +29,14 @@ class SignatureValidator:
             # This error is raised when the request to x5u URL fails.
             raise HTTPException(
                 status_code=422, detail=f"Invalid x5u. The certificate could not be retrieved. Error: {e}")
+        except TypeError:
+             # TypeError is raised when the x5u does not response cannot be parsed in json.
+            raise HTTPException(
+                status_code=422, detail="Invalid x5u. The certificate could not be retrieved. The key is invalid.")
+        except pyjwt.InvalidSignatureError:
+            # InvalidSignatureError is raised when the signature is invalid.
+            raise HTTPException(
+                status_code=422, detail="Invalid signature. The certificate could not be validated. The signature is invalid.")
         except pyjwt.ImmatureSignatureError:
             # ImmatureSignatureError is raised when the token is not yet valid.
             raise HTTPException(

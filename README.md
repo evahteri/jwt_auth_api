@@ -37,6 +37,13 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsIng1dSI6Imh0dHA6Ly9sb2
 
 - The server responds with an error and explanation if the JWT is invalid.
 
+### Possible HTTP response codes and explanations
+
+- 200: The request was successful and the JWT provided is valid
+- 400: There was a problem in the request format (i.e. missing header)
+- 422: The request was formed correctly but the JWT token was invalid due to an error (i.e. Token expired) or could not be verified (i.e. invalid x5u)
+
+
 ### Creating a valid RS256 JWT token and serving the public key locally for demonstrative purposes and integration testing
 
 - Navigate to backend_for_testing directory
@@ -80,6 +87,9 @@ Integration tests use the provided dummy backend for token validation.
 - Start the dummy backend server with ```python3 src/backend_for_testing/dummy_backend.py```
 
 - Run the tests with ```pytest```
+
+## Flowgraph
+![Flowgraph](https://github.com/evahteri/jwt_auth_api/blob/main/documentation/flowgraph.png)
 
 ## Usage Examples
 
@@ -154,7 +164,6 @@ Connection: close
   "detail": "Invalid x5u. The certificate could not be retrieved. The url provided in x5u responded with a 404 status code."
 }
 ```
-
 
 ## Documentation
 - [Backlog](documentation/backlog.md)
